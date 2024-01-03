@@ -10,14 +10,14 @@ app.use(express.json());
 // CRUD pour les utilisateurs
 app.get('/utilisateurs', (req, res) => {
     database.query('SELECT * FROM utilisateur', (error, results) => {
-        res.json(results);
+        res.status(200).json(results);
     });
 });
 
 app.post('/utilisateurs', (req, res) => {
     const { nom, prenom, email } = req.body;
     database.query('INSERT INTO utilisateur (nom, prenom, email) VALUES (?, ?, ?)', [nom, prenom, email], (error, results) => {
-        res.json({ id: results.insertId, nom, prenom, email });
+        res.status(200).json({ id: results.insertId, nom, prenom, email });
     });
 });
 
@@ -25,14 +25,14 @@ app.put('/utilisateurs/:id', (req, res) => {
     const userId = req.params.id;
     const { nom, prenom, email } = req.body;    
     database.query('UPDATE utilisateur SET nom = ?, prenom = ?, email = ? WHERE id = ?', [nom, prenom, email, userId], (error) => {
-        res.json({ id: userId, nom, prenom, email });
+        res.status(200).json({ id: userId, nom, prenom, email });
     });
 });
 
 app.delete('/utilisateurs/:id', (req, res) => {
     const userId = req.params.id;
     database.query('DELETE FROM utilisateur WHERE id = ?', [userId], (error) => {
-        res.json({ message: 'Utilisateur supprimé avec succès', userId });
+        res.status(200).json({ message: 'Utilisateur supprimé avec succès', userId });
     });
 });
 
@@ -40,7 +40,7 @@ app.delete('/utilisateurs/:id', (req, res) => {
 app.post('/commentaires', (req, res) => {
     const { utilisateur_id, technologie_id } = req.body;
     database.query('INSERT INTO commentaire (utilisateur_id, technologie_id) VALUES (?, ?)', [utilisateur_id, technologie_id], (error, results) => {
-        res.json({ id: results.insertId, utilisateur_id, technologie_id });
+        res.status(200).json({ id: results.insertId, utilisateur_id, technologie_id });
     });
 });
 
@@ -48,7 +48,7 @@ app.post('/commentaires', (req, res) => {
 app.get('/commentaires/technologie/:technologieId', (req, res) => {
     const technologieId = req.params.technologieId;
     database.query('SELECT * FROM commentaire WHERE technologie_id = ?', [technologieId], (error, results) => {
-        res.json(results);
+        res.status(200).json(results);
     });
 });
 
@@ -56,7 +56,7 @@ app.get('/commentaires/technologie/:technologieId', (req, res) => {
 app.get('/commentaires/utilisateur/:utilisateurId', (req, res) => {
     const utilisateurId = req.params.utilisateurId;
     database.query('SELECT * FROM commentaire WHERE utilisateur_id = ?', [utilisateurId], (error, results) => {
-        res.json(results);
+        res.status(200).json(results);
     });
 });
 
@@ -65,7 +65,7 @@ app.get('/commentaires/utilisateur/:utilisateurId', (req, res) => {
 app.get('/commentaires/avant/:date', (req, res) => {
     const dateParam = req.params.date;
     database.query('SELECT * FROM commentaire WHERE date_creation_commentaire < ?', [dateParam], (error, results) => {
-        res.json(results);
+        res.status(200).json(results);
     });
 });
 
