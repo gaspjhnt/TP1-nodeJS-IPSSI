@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Commentaires</title>
+</head>
+<body>
+    <h1>Liste des Commentaires</h1>
+
+    <a href="/register.html">Pas encore enregistré? Cliquez ici pour vous inscrire</a>
+    <br>
+    <a href="/login.html">Déjà enregistré? Cliquez ici pour vous connecter</a>
+    <br>
+    <a href="/index.html">Cliquez ici pour retourner à l'accueil</a>
+    <br>
+
+    
+    <button onclick="fetchComments()">Charger les Commentaires</button>
+    <div id="output"></div>
+
+    <script>
+        function fetchComments() {
+            const token = localStorage.getItem('jwtToken');
+            
+            fetch('http://localhost:8000/commentaires/getAll', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => response.json())
+            .then(comments => {
+                const outputDiv = document.getElementById('output');
+                outputDiv.innerHTML = JSON.stringify(comments, null, 2);
+            })
+            .catch(error => {
+                console.error('Erreur lors du chargement des commentaires:', error);
+                alert('Accès refusé. Veuillez vous connecter.');
+            });
+        }
+    </script>
+</body>
+</html>
